@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# MLflow local experiments
+mlruns/
+
+# DVC cache
+.dvc/cache/
+
+# Model files (tracked through DVC)
+models/
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+src/components/model_optimization_backup.py

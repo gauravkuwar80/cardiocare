@@ -1,0 +1,261 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CardioCare | Heart Health Assessment</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+          rel="stylesheet">
+</head>
+
+<body>
+
+
+<header class="navbar">
+    <a href="/" class="brand">
+        <span class="brand-icon">♥</span>
+        <span>CardioCare</span>
+    </a>
+
+    <div class="nav-right">
+        <span class="nav-tag">HEART HEALTH & WELLNESS</span>
+        <a href="/dashboard" class="nav-dashboard">Dashboard →</a>
+    </div>
+</header>
+
+
+    <main>
+
+        <section class="hero">
+            <div class="hero-content">
+                <span class="eyebrow">YOUR HEALTH, OUR PRIORITY</span>
+
+                <h1>Listen to your heart.<br>
+                    <span>Understand your health.</span>
+                </h1>
+
+                <p>
+                    A simple machine learning based heart health
+                    assessment to help you understand potential risk
+                    indicators using your health information.
+                </p>
+
+                <a href="#assessment" class="primary-btn">
+                    Start Assessment <span>→</span>
+                </a>
+            </div>
+
+            <div class="hero-art">
+                <div class="heart-circle">
+                    <span class="heart-symbol">♥</span>
+                    <span class="pulse-line">〰</span>
+                </div>
+                <div class="floating-note">
+                    <span>♡</span>
+                    <div>
+                        <strong>Care starts here</strong>
+                        <small>Take a moment for your health</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="assessment-section" id="assessment">
+
+            <div class="section-heading">
+                <span class="eyebrow">PERSONAL HEALTH PROFILE</span>
+                <h2>Let's get to know your heart.</h2>
+                <p>Enter your health details below to begin your assessment.</p>
+            </div>
+
+            {% if prediction %}
+            <div class="result-card">
+                <span class="result-label">ASSESSMENT RESULT</span>
+                <h3>{{ prediction }}</h3>
+                <p>This is an ML-generated result, not a medical diagnosis.
+                   Please consult a qualified healthcare professional.</p>
+            </div>
+            {% endif %}
+
+            {% if error %}
+            <div class="error-card">{{ error }}</div>
+            {% endif %}
+
+            <form action="/predict" method="POST" class="health-form">
+
+                <div class="form-group-heading">
+                    <span>01</span>
+                    <div>
+                        <h3>Basic Information</h3>
+                        <p>A few details to get started.</p>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="field">
+                        <label for="age">Age</label>
+                        <input type="number" id="age" name="age"
+                               min="1" max="120" placeholder="e.g. 45" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="sex">Sex</label>
+                        <select id="sex" name="sex" required>
+                            <option value="">Select</option>
+                            <option value="1">Male</option>
+                            <option value="0">Female</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="form-group-heading">
+                    <span>02</span>
+                    <div>
+                        <h3>Medical Information</h3>
+                        <p>Enter the values from your health records.</p>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="field">
+                        <label for="cp">Chest Pain Type</label>
+                        <select id="cp" name="cp" required>
+                            <option value="">Select type</option>
+                            <option value="0">Typical Angina</option>
+                            <option value="1">Atypical Angina</option>
+                            <option value="2">Non-Anginal Pain</option>
+                            <option value="3">Asymptomatic</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="trestbps">Resting Blood Pressure (mm Hg)</label>
+                        <input type="number" id="trestbps" name="trestbps"
+                               placeholder="e.g. 120" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="chol">Serum Cholesterol (mg/dl)</label>
+                        <input type="number" id="chol" name="chol"
+                               placeholder="e.g. 200" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="fbs">Fasting Blood Sugar above 120 mg/dl?</label>
+                        <select id="fbs" name="fbs" required>
+                            <option value="">Select</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="restecg">Resting ECG</label>
+                        <select id="restecg" name="restecg" required>
+                            <option value="">Select</option>
+                            <option value="0">Normal</option>
+                            <option value="1">ST-T Wave Abnormality</option>
+                            <option value="2">Left Ventricular Hypertrophy</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="thalach">Maximum Heart Rate Achieved</label>
+                        <input type="number" id="thalach" name="thalach"
+                               placeholder="e.g. 160" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="exang">Exercise-Induced Angina</label>
+                        <select id="exang" name="exang" required>
+                            <option value="">Select</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="oldpeak">ST Depression (Oldpeak)</label>
+                        <input type="number" step="any" id="oldpeak"
+                               name="oldpeak" placeholder="e.g. 1.0" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="slope">Slope of Peak Exercise ST Segment</label>
+                        <select id="slope" name="slope" required>
+                            <option value="">Select</option>
+                            <option value="0">Upsloping</option>
+                            <option value="1">Flat</option>
+                            <option value="2">Downsloping</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="ca">Number of Major Vessels (CA)</label>
+                        <select id="ca" name="ca" required>
+                            <option value="">Select</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="thal">Thalassemia (Thal)</label>
+                        <select id="thal" name="thal" required>
+                            <option value="">Select</option>
+                            <option value="0">Unknown</option>
+                            <option value="1">Normal</option>
+                            <option value="2">Fixed Defect</option>
+                            <option value="3">Reversible Defect</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="form-footer">
+                    <p>♡ Your information is used only for this assessment.</p>
+                    <button type="submit" class="primary-btn">
+                        Analyze My Heart Health <span>→</span>
+                    </button>
+                </div>
+
+            </form>
+        </section>
+
+        <section class="disclaimer">
+            <span>✦</span>
+            <p>
+                <strong>Important:</strong> CardioCare is an educational
+                machine learning project. It does not provide medical
+                advice, diagnosis, or treatment. Always consult a
+                qualified healthcare professional for medical concerns.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <a href="/" class="brand">
+            <span class="brand-icon">♥</span>
+            <span>CardioCare</span>
+        </a>
+        <p>Made with care for a healthier tomorrow.</p>
+        <small>© 2026 CardioCare</small>
+    </footer>
+
+</body>
+</html>

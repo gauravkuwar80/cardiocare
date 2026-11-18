@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CardioCare | ML Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <header class="topbar">
+        <div class="brand">Cardio<span>Care.</span></div>
+
+        <a href="/" class="back-link">← Back to Home</a>
+    </header>
+
+    <section class="heading">
+        <h1>Model Performance Dashboard</h1>
+        <p>
+            Explore the performance of seven machine learning
+            algorithms trained for heart disease risk prediction.
+        </p>
+    </section>
+
+    <section class="stats">
+
+        <div class="stat-card">
+            <p>Algorithms Evaluated</p>
+            <h2>{{ models|length }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <p>Highest Test Accuracy</p>
+            <h2>{{ "%.2f"|format((models|max(attribute='Accuracy')).Accuracy|float * 100) }}%</h2>
+        </div>
+
+        <div class="stat-card">
+            <p>Highest Test F1-Score</p>
+            <h2>{{ "%.2f"|format((models|max(attribute='F1-Score'))['F1-Score']|float * 100) }}%</h2>
+        </div>
+
+    </section>
+
+    <h2 class="section-title">Algorithm Comparison</h2>
+
+    <div class="table-card">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Algorithm</th>
+                    <th>CV F1-Score</th>
+                    <th>Accuracy</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>Test F1-Score</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for model in models %}
+                <tr>
+                    <td>
+                        {% if loop.first %}
+                            <span class="best-model">{{ model['Model'] }}</span>
+                        {% else %}
+                            {{ model['Model'] }}
+                        {% endif %}
+                    </td>
+
+                    <td>{{ "%.2f"|format(model['CV Best F1']|float * 100) }}%</td>
+                    <td>{{ "%.2f"|format(model['Accuracy']|float * 100) }}%</td>
+                    <td>{{ "%.2f"|format(model['Precision']|float * 100) }}%</td>
+                    <td>{{ "%.2f"|format(model['Recall']|float * 100) }}%</td>
+                    <td>{{ "%.2f"|format(model['F1-Score']|float * 100) }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    <p class="note">
+        <h2 class="section-title">Performance Visualization</h2>
+
+<div class="table-card" style="padding: 24px;">
+    <div style="margin-bottom: 25px;">
+        <h3 style="margin-bottom: 15px;">Accuracy Comparison</h3>
+
+        {% for model in models %}
+        <div style="margin-bottom: 16px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                <span>{{ model['Model'] }}</span>
+                <strong>{{ "%.2f"|format(model['Accuracy']|float * 100) }}%</strong>
+            </div>
+
+            <div style="height:10px; background:#e8eee9; border-radius:20px; overflow:hidden;">
+                <div style="height:100%; width:{{ model['Accuracy']|float * 100 }}%; background:#527b64; border-radius:20px;"></div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div>
+        <h3 style="margin-bottom: 15px;">F1-Score Comparison</h3>
+
+        {% for model in models %}
+        <div style="margin-bottom: 16px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                <span>{{ model['Model'] }}</span>
+                <strong>{{ "%.2f"|format(model['F1-Score']|float * 100) }}%</strong>
+            </div>
+
+            <div style="height:10px; background:#f3e9e3; border-radius:20px; overflow:hidden;">
+                <div style="height:100%; width:{{ model['F1-Score']|float * 100 }}%; background:#bd805e; border-radius:20px;"></div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+        Note: Results are based on the project's cleaned dataset and
+        selected train-test split. Cross-validation and test metrics
+        measure different things. These experimental results do not
+        establish clinical reliability or diagnostic accuracy.
+    </p>
+
+</div>
+
+<section class="evaluation-section">
+
+    <h2 class="section-title">Detailed Model Evaluation</h2>
+
+    <p class="evaluation-description">
+        Detailed performance analysis of the selected
+        Logistic Regression model on the test dataset.
+    </p>
+
+    <div class="evaluation-grid">
+
+        <div class="evaluation-card">
+            <h3>Confusion Matrix</h3>
+            <img src="{{ url_for('static', filename='images/confusion_matrix.png') }}"
+                 alt="Confusion Matrix">
+        </div>
+
+        <div class="evaluation-card">
+            <h3>ROC-AUC Curve</h3>
+            <img src="{{ url_for('static', filename='images/roc_curve.png') }}"
+                 alt="ROC Curve">
+        </div>
+
+        <div class="evaluation-card">
+            <h3>Precision-Recall Curve</h3>
+            <img src="{{ url_for('static', filename='images/precision_recall_curve.png') }}"
+                 alt="Precision Recall Curve">
+        </div>
+
+    </div>
+
+    <p class="evaluation-description">
+        These results are experimental and do not establish
+        clinical reliability or diagnostic accuracy.
+    </p>
+
+</section>
+
+</body>
+</html>

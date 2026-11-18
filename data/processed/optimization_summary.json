@@ -1,0 +1,7 @@
+{
+    "best_model": "Support Vector Machine",
+    "selection_metric": "5-fold Cross-validation F1-score",
+    "cross_validation": "5-fold StratifiedKFold",
+    "test_size": 0.2,
+    "test_random_state": 42
+}
