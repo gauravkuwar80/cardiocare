@@ -50,7 +50,7 @@ def predict():
         result = prediction_pipeline.predict(input_data)
 
         return render_template(
-            "index.html",
+            "result.html",
             prediction=result["result"]
         )
 
@@ -62,4 +62,4 @@ def predict():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=False)
+    app.run(host="0.0.0.0", port=5002, debug=False)
